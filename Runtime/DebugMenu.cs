@@ -24,8 +24,8 @@ namespace DebugMenuUtility
         DebugMenuItem[] currentItems;
         string[] subFolders;
 
-        public static event Action onDebugMenuShown;
-        public static event Action onDebugMenuHidden;
+        public static event DebugMenuDelegate onDebugMenuToggle;
+        public delegate void DebugMenuDelegate(bool visible);
 
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -102,10 +102,7 @@ namespace DebugMenuUtility
             {
                 visible = !visible;
                 selected = 0;
-                if (visible)
-                    onDebugMenuShown.Invoke();
-                else
-                    onDebugMenuHidden.Invoke();
+                onDebugMenuToggle.Invoke(visible);
 
             }
 
