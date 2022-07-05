@@ -6,7 +6,7 @@ namespace DebugMenuUtility
 {
     [DebugMenuItem("Rendering")]
     class FPSDebugMenuItem : DebugMenuItem
-    {
+    { 
         public override string label => "Frame Rate";
         public override string value => UpdateTime();
 
@@ -92,6 +92,62 @@ namespace DebugMenuUtility
                 QualitySettings.vSyncCount = 1;
             else
                 QualitySettings.vSyncCount = 0;
+        }
+    }
+
+    [DebugMenuItem("Rendering")]
+    class FullScreenModeMenuItem : DebugMenuItem
+    {
+        public override string label => "Full Screen Mode";
+        public override string value => Screen.fullScreenMode.ToString();
+        public override Action OnValidate => Increase;
+        public override Action OnLeft => Decrease;
+        public override Action OnRight => Increase;
+
+        void Increase() => Toggle(1);
+        void Decrease() => Toggle(-1);
+        void Toggle(int pad = 1)
+        {
+            Screen.fullScreenMode = (FullScreenMode)(((int)Screen.fullScreenMode + pad) % 4);
+        }
+    }
+
+    [DebugMenuItem("Rendering")]
+    class ResolutionMenuItem : DebugMenuItem
+    {
+        bool inited = false;
+
+        public override string label => "Screen Resolution";
+        public override string value => $"{Screen.currentResolution.width}×{Screen.currentResolution.height}";
+
+        public override Action OnValidate => Increase;
+        public override Action OnLeft => Decrease;
+        public override Action OnRight => Increase;
+
+        void Increase() => Toggle(1);
+        void Decrease() => Toggle(-1);
+
+        void Toggle(int pad = 1)
+        {
+            var current = Screen.currentResolution;
+            int rate = current.refreshRate;
+            int i = 0;
+            int found = -1;
+            List<Resolution> resolutions = new List<Resolution>();
+            foreach (var r in Screen.resolutions)
+            {
+                if (r.refreshRate == rate)
+                {
+                    resolutions.Add(r);
+                    if(r.width == current.width && r.height == current.height)
+                    {
+                        found = i;
+                    }
+                }
+                i++;
+            }
+            var next = resolutions[(i + pad) % resolutions.Count];
+            Screen.SetResolution(next.width, next.height, Screen.fullScreen);
         }
     }
 }
