@@ -37,3 +37,59 @@ The debug menu can be customized using the menu `Tools/Debug Menu/Create DebugMe
 Editing this asset enables fine tuning over the configuration of the menu including position (left, center or right), width and height of lines, font type and size overrides, colors and inputs.
 
 
+## C# API
+
+There is a simple API revolving around the debug menu, it enables handling things when the menu is opened/closed (for instance to disable input for other objects). Also, new items can be created using simple class declaration.
+
+The `DebugMenu` class can be accessed via the `using DebugMenuUtility;` namespace usage.
+
+### Handling Open/Close of the menu
+
+A callback is available through the `DebugMenu.onDebugMenuToggle` event. It calls a delegate with a bool argument that tells whether the menu is opened or not. In the example below, the callback sets a `paused` flag to prevent player movement while the menu is visible. 
+
+```csharp
+    private void OnEnable()
+    {
+        DebugMenuUtility.DebugMenu.onDebugMenuToggle += DebugMenu_onDebugMenuToggle;
+    }
+
+    private void OnDisable()
+    {
+        DebugMenuUtility.DebugMenu.onDebugMenuToggle -= DebugMenu_onDebugMenuToggle;
+    }
+    private void DebugMenu_onDebugMenuToggle(bool visible)
+    {
+        this.paused = visible;
+    }
+```
+
+### Adding new Items to the menu
+
+New menu items can be added through simple class declaration (inheriting `DebugMenuItem`), and using the `DebugMenuItem` class attribute to define in which category is set the element. Using slashes in the category path enable creating sub folders.
+
+Here is an example below that showcases how to manipulate the `Screen.fullScreenMode` enum value.
+The following members can/haveto be overridden:
+- label (mandatory) : the label of the item
+- value (mandatory) : the value displayed
+- OnValidate (optional) : the method called when pressing the validate key/button.
+- OnLeft (optional) : the method called when pressing the left key/button
+- OnRight (optional) : the method called when pressing the right key/button
+
+```csharp
+    [DebugMenuItem("Rendering")]
+    class FullScreenModeMenuItem : DebugMenuItem
+    {
+        public override string label => "Full Screen Mode";
+        public override string value => Screen.fullScreenMode.ToString();
+        public override Action OnValidate => Increase;
+        public override Action OnLeft => Decrease;
+        public override Action OnRight => Increase;
+
+        void Increase() => Toggle(1);
+        void Decrease() => Toggle(-1);
+        void Toggle(int pad = 1)
+        {
+            Screen.fullScreenMode = (FullScreenMode)(((int)Screen.fullScreenMode + pad) % 4);
+        }
+    }
+```
