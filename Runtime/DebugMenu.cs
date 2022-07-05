@@ -152,19 +152,35 @@ namespace DebugMenuUtility
             int count = currentItems.Length;
 
             GUI.color = config.headerColor;
-            Rect r = new Rect(64, 64, config.width, config.lineHeight);
+            float x;
+            switch (config.alignment)
+            {
+                case DebugMenuConfiguration.Alignment.Left:
+                    x = 64;
+                    break;
+                case DebugMenuConfiguration.Alignment.Center:
+                    x = Screen.width / 2 - config.width / 2;
+                    break;
+                default:
+                case DebugMenuConfiguration.Alignment.Right:
+                    x = Screen.width - 64 - config.width;
+                    break;
+            }
+
+            Rect r = new Rect(x, 64, config.width, config.lineHeight);
+
             GUI.DrawTexture(r, Texture2D.whiteTexture);
             GUI.color = config.headerTextColor;
             GUI.Label(r, menuName, styles.header);
 
-            r = new Rect(64, 64 + config.lineHeight, config.width, config.lineHeight * count);
+            r = new Rect(x, 64 + config.lineHeight, config.width, config.lineHeight * count);
             GUI.color = config.bgColor;
             GUI.DrawTexture(r, Texture2D.whiteTexture);
 
             for (int i = 0; i < count; i++)
             {
                 bool isSelected = (i == selected);
-                r = new Rect(64, 64 + (config.lineHeight * (i + 1)), config.width, config.lineHeight);
+                r = new Rect(x, 64 + (config.lineHeight * (i + 1)), config.width, config.lineHeight);
                 if (isSelected)
                 {
                     GUI.color = config.selectedColor;

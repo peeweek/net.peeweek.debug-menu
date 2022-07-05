@@ -5,6 +5,15 @@ namespace DebugMenuUtility
 {
     public class DebugMenuConfiguration : ScriptableObject
     {
+        public enum Alignment
+        {
+            Left,
+            Center,
+            Right
+        }
+
+        public Alignment alignment = Alignment.Right;
+
         [Header("Size")]
         public int width = 400;
         public int lineHeight = 24;
@@ -33,29 +42,29 @@ namespace DebugMenuUtility
         {
             Debug.Log("Initialize DebugMenuConfiguration");
 
-            toggle = new InputAction();
-            toggle.AddBinding(Gamepad.current.selectButton);
-            toggle.AddBinding(Keyboard.current.f12Key);
+            toggle = new InputAction("Toggle", InputActionType.Button);
+            toggle.AddBinding("<Gamepad>/Select");
+            toggle.AddBinding("<Keyboard>/F12");
 
-            up = new InputAction();
-            up.AddBinding(Gamepad.current.dpad.up);
-            up.AddBinding(Keyboard.current.upArrowKey);
+            up = new InputAction("Up", InputActionType.Button);
+            up.AddBinding("<Gamepad>/D-Pad/Up");
+            up.AddBinding("<Keyboard>/UpArrow");
 
-            down = new InputAction();
-            down.AddBinding(Gamepad.current.dpad.down);
-            down.AddBinding(Keyboard.current.downArrowKey);
+            down = new InputAction("Down", InputActionType.Button);
+            down.AddBinding("<Gamepad>/D-Pad/Down");
+            down.AddBinding("<Keyboard>/DownArrow");
 
-            left = new InputAction();
-            left.AddBinding(Gamepad.current.dpad.left);
-            left.AddBinding(Keyboard.current.leftArrowKey);
+            left = new InputAction("Left", InputActionType.Button);
+            left.AddBinding("<Gamepad>/D-Pad/Left");
+            left.AddBinding("<Keyboard>/LeftArrow");
 
-            right = new InputAction();
-            right.AddBinding(Gamepad.current.dpad.right);
-            right.AddBinding(Keyboard.current.rightArrowKey);
+            right = new InputAction("Right", InputActionType.Button);
+            right.AddBinding("<Gamepad>/D-Pad/Right");
+            right.AddBinding("<Keyboard>/RightArrow");
 
-            enter = new InputAction();
-            enter.AddBinding(Gamepad.current.buttonSouth);
-            enter.AddBinding(Keyboard.current.enterKey);
+            enter = new InputAction("Enter", InputActionType.Button);
+            enter.AddBinding("<Gamepad>/Button South");
+            enter.AddBinding("<Keyboard>/Enter");
         }
 
 #if UNITY_EDITOR
