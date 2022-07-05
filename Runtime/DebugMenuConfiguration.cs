@@ -29,8 +29,10 @@ namespace DebugMenuUtility
         public InputAction right;
         public InputAction enter;
 
-        private void Awake()
+        public void Initialize()
         {
+            Debug.Log("Initialize DebugMenuConfiguration");
+
             toggle = new InputAction();
             toggle.AddBinding(Gamepad.current.selectButton);
             toggle.AddBinding(Keyboard.current.f12Key);
@@ -64,6 +66,7 @@ namespace DebugMenuUtility
             UnityEditor.AssetDatabase.CreateAsset(config, "Assets/Resources/DebugMenuConfiguration.asset");
             UnityEditor.EditorGUIUtility.PingObject(config);
             UnityEditor.Selection.activeObject = config;
+            config.Initialize();
         }
 #endif
     }

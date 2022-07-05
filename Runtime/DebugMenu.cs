@@ -64,7 +64,10 @@ namespace DebugMenuUtility
 
             // Fallback to defaults
             if (config == null)
+            {
                 config = ScriptableObject.CreateInstance<DebugMenuConfiguration>();
+                config.Initialize();
+            }
 
             styles = new Styles(config);
 
@@ -103,7 +106,6 @@ namespace DebugMenuUtility
                 visible = !visible;
                 selected = 0;
                 onDebugMenuToggle.Invoke(visible);
-
             }
 
             if (visible)
