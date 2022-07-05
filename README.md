@@ -2,6 +2,8 @@
 
 A debug menu for use at runtime in your Unity Projects. The goal is to keep it as simple as possible. The menu can register items to extend its possibilities. These items are easy to write and implement. There are some examples shipped with the base package.
 
+![](https://raw.githubusercontent.com/peeweek/net.peeweek.debug-menu/main/Documentation%7E/Screenshot.png)
+
 ## Requirements
 
 * Unity 2021.3
@@ -32,5 +34,6 @@ Open Package manager (Window/Package Manager), select the **Debug Menu** package
 
 The debug menu can be customized using the menu `Tools/Debug Menu/Create DebugMenu Configuration Asset`
 
+Editing this asset enables fine tuning over the configuration of the menu including position (left, center or right), width and height of lines, font type and size overrides, colors and inputs.
 
 
